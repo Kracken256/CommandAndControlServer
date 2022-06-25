@@ -6,7 +6,7 @@ This is the custom C&amp;C server for TigerWamp spyware.
 2. [Running program](#running-program)
 
 ## Python version
-This program was made for python 3.9.
+This program was made for python 3.1.
 
 ## Running program
 To run the server type:
