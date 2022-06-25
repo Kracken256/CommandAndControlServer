@@ -10,7 +10,7 @@ This program was made for python 3.9.
 
 ## Running program
 To run the server type:
-```py
+```bash
 python3 main.py
 ```
 
