@@ -11,7 +11,7 @@ import time
 import datetime
 
 __server_host = "0.0.0.0"
-__server_ports = [x for x in range(3000, 3100)]  # change me
+__server_ports = [5000]  # change me
 __server_port = None
 
 ThreadCount = 0
@@ -46,6 +46,7 @@ def init_server():
             ServerSideSocket.bind((__server_host, port))
             status = True
             __server_port = port
+            print("Server init on port: " + str(port))
             break
         except Exception as e:
             print(str(e))
@@ -115,12 +116,9 @@ def print_sessions():
 
 
 def get_respone_prefix(response: str):
-    a1 = response.find("::")
-    header_len = int(response[0:a1])
-    header = response[a1 + 2:header_len + 2]
-    a2 = header.split("::")
-    username, machine_name, cwd, ps, out = a2[0], a2[1], a2[2], a2[3], a2[4]
-    return username, machine_name, cwd, ps, out
+    a2 = response.split("::")
+    return a2[0], a2[1], a2[2], a2[3], a2[4]
+    
 
 
 def run_server_command(command):
