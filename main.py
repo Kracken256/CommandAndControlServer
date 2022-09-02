@@ -10,7 +10,7 @@ import binascii
 import time
 import datetime
 
-__server_host = "localhost"
+__server_host = "0.0.0.0"
 __server_ports = [x for x in range(3000, 3100)]  # change me
 __server_port = None
 
